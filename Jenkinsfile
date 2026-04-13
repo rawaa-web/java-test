@@ -1,25 +1,33 @@
 pipeline {
- agent any
+    agent any
 
- stages {
+    environment {
+        ANSIBLE_INVENTORY = 'inventory.ini'
+        ANSIBLE_PLAYBOOK = 'playbook.yml'
+    }
 
- stage('Checkout') {
- steps {
- git 'https://github.com/TON_USERNAME/jenkins-java-demo.git'
- }
- }
+    stages {
 
- stage('Compile') {
- steps {
- sh 'javac HelloWorld.java'
- }
- }
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/OumouMohamedBa/MinTrackWebApp.git'
+            }
+        }
 
- stage('Run') {
- steps {
- sh 'java HelloWorld'
- }
- }
+        stage('Install Ansible') {
+            steps {
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y ansible'
+            }
+        }
 
- }
+        stage('Run Ansible') {
+            steps {
+                ansiblePlaybook(
+                    playbook: "${ANSIBLE_PLAYBOOK}",
+                    inventory: "${ANSIBLE_INVENTORY}"
+                )
+            }
+        }
+    }
 }
