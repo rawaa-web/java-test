@@ -1,0 +1,14 @@
+---
+- name: Deploy application
+  hosts: web
+
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Create index.html
+      copy:
+        content: "TP Jenkins Ansible réussi 🎉"
+        dest: /var/www/html/index.html
