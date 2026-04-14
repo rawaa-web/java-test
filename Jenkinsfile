@@ -1,9 +1,11 @@
----
-- name: TP Jenkins Ansible
-  hosts: web
+pipeline {
+    agent any
 
-  tasks:
-    - name: Créer une page web
-      copy:
-        content: "TP Jenkins fonctionne 🎉"
-        dest: /var/www/html/index.html
+    stages {
+        stage('Test') {
+            steps {
+                echo "HELLO JENKINS"
+            }
+        }
+    }
+}
